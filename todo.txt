@@ -32,14 +32,14 @@ MASTER TODO & DESCRIPTION
 Legend:
 [ ] open [x] done [~] WIP [!] blocked
 PHASE 0 – Skeleton (Day 0-1)
-[ ] repo init: github.com/0xReLogic/river
-[ ] go mod tidy + Makefile (build, lint, test, bench)
-[ ] README badges: MIT, Go Report Card, CI (GitHub Actions)
+[x] repo init: github.com/0xReLogic/river
+[x] go mod tidy + Makefile (build, lint, test, bench)
+[x] README badges: MIT, Go Report Card, CI (GitHub Actions)
 PHASE 1 – Core Data Format (Day 2-4)
-[ ] design column-block spec (header + pages + stats)
-[ ] codegen fixed-width & var-length encoders (i32, i64, f32, f64, string, bool)
-[ ] LZ4 & roaring bitmap compression layer
-[ ] unit-bench: 1 M rows encode < 250 MB, decode < 80 ms
+[x] design column-block spec (header + pages + stats)
+[x] codegen fixed-width & var-length encoders (i32, i64, f32, f64, string, bool)
+[x] LZ4 & roaring bitmap compression layer
+[x] unit-bench: 1 M rows encode < 250 MB, decode < 80 ms
 PHASE 2 – Storage Engine (Day 5-8)
 [ ] LSM tree (levels 0-6) with level-triggered compaction
 [ ] mmap-backed blocks, zero-copy read path
