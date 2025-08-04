@@ -1,0 +1,82 @@
+🎯 Project: “RIVER”
+Tagline: “Columnar OLAP database yang bisa injest 1 juta baris/detik dari Kafka, lalu query SELECT count() GROUP BY city dalam 5 ms — satu binary, no JVM, no CGO.”
+🔥 Why it screams “backend dewa”
+Table
+Copy
+Pain point market	Your magic
+ClickHouse restart = downtime	Hot-swap partition tanpa stop write
+Kafka → OLAP ETL latency 5-15 menit	Injest real-time, query langsung
+Memory explosion on high-cardinality group-by	SIMD dictionary + roaring bitmap
+Cloud bill mahal	Compression ratio 10× vs Parquet, zero-copy mmap
+🏗️ Architecture (pure Go)
+Table
+Copy
+Layer	Tech
+Storage engine	Columnar block (LZ4 + roaring bitmap)
+Injest	Kafka consumer group, zero-copy decode
+Query engine	Vectorized execution (AVX2 via golang.org/x/sys/cpu)
+Index	Min-max + zone-map auto-generated
+Compaction	Background merge tree (LSM style)
+API	HTTP + native Go client
+🧪 Portfolio punchline
+“I built a single-binary OLAP engine that injests 1 M rows/sec and serves sub-10 ms aggregations on my laptop — no ClickHouse, no Spark, no JVM.”
+
+
+
+
+RIVER – Petabyte-Grade Streaming OLAP Engine in Pure Go
+“Sub-10 ms analytics over billions of rows, no JVM, no CGO, single binary.”
+────────────────────────
+MASTER TODO & DESCRIPTION
+────────────────────────
+Legend:
+[ ] open [x] done [~] WIP [!] blocked
+PHASE 0 – Skeleton (Day 0-1)
+[ ] repo init: github.com/0xReLogic/river
+[ ] go mod tidy + Makefile (build, lint, test, bench)
+[ ] README badges: MIT, Go Report Card, CI (GitHub Actions)
+PHASE 1 – Core Data Format (Day 2-4)
+[ ] design column-block spec (header + pages + stats)
+[ ] codegen fixed-width & var-length encoders (i32, i64, f32, f64, string, bool)
+[ ] LZ4 & roaring bitmap compression layer
+[ ] unit-bench: 1 M rows encode < 250 MB, decode < 80 ms
+PHASE 2 – Storage Engine (Day 5-8)
+[ ] LSM tree (levels 0-6) with level-triggered compaction
+[ ] mmap-backed blocks, zero-copy read path
+[ ] WAL (write-ahead-log) for crash recovery
+[ ] background compaction worker pool (goroutine + errgroup)
+PHASE 3 – Kafka Ingest Pipeline (Day 9-11)
+[ ] sarama consumer-group with auto-commit
+[ ] zero-copy JSON → columnar decode (simdjson fallback)
+[ ] back-pressure via buffered channel & rate-limiter
+[ ] exactly-once guarantee via WAL + offset checkpoint
+PHASE 4 – Vectorized Query Engine (Day 12-15)
+[ ] AST parser (SELECT col, agg FROM tbl WHERE … GROUP BY …)
+[ ] SIMD filter (AVX2 & fallback scalar)
+[ ] hash-aggregate with two-level roaring bitmap
+[ ] streaming Top-K / HyperLogLog sketches
+PHASE 5 – HTTP API & CLI (Day 16-18)
+[ ] /query JSON endpoint (POST)
+[ ] /health live & ready probes
+[ ] CLI: river server, river bench, river faker
+[ ] OpenAPI spec + swagger-ui embed
+PHASE 6 – Observability (Day 19-20)
+[ ] Prometheus metrics: injest_rows, query_latency, disk_bytes
+[ ] pprof endpoints under /debug/pprof
+[ ] structured logging (zerolog) with trace-ID propagation
+PHASE 7 – Benchmark & Stress (Day 21-22)
+[ ] 1 M rows/sec injest test on 8-core laptop
+[ ] TPC-DS 1 GB query suite < 5 ms P95
+[ ] chaos test: kill -9 node, verify WAL replay zero loss
+PHASE 8 – Docs & Release (Day 23-25)
+[ ] architecture blog post (Medium)
+[ ] Docker & Homebrew formula
+[ ] v0.1.0 tag + GitHub release notes
+────────────────────────
+DONE DEFINITION
+────────────────────────
+• Single binary < 30 MB
+• Ingest ≥ 1 M rows/sec sustained
+• GROUP BY 100 M rows ≤ 10 ms on laptop
+• Zero external services (Kafka optional)
+• Public benchmark repo + GIF demo in README
