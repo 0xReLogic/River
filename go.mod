@@ -10,4 +10,6 @@ require (
 require (
 	github.com/bits-and-blooms/bitset v1.12.0 // indirect
 	github.com/mschoch/smat v0.2.0 // indirect
+	golang.org/x/sync v0.16.0 // indirect
+	golang.org/x/sys v0.34.0 // indirect
 )

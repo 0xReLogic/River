@@ -1,6 +1,6 @@
-🎯 Project: “RIVER”
+ Project: “RIVER”
 Tagline: “Columnar OLAP database yang bisa injest 1 juta baris/detik dari Kafka, lalu query SELECT count() GROUP BY city dalam 5 ms — satu binary, no JVM, no CGO.”
-🔥 Why it screams “backend dewa”
+ Why it screams “backend dewa”
 Table
 Copy
 Pain point market	Your magic
@@ -8,7 +8,7 @@ ClickHouse restart = downtime	Hot-swap partition tanpa stop write
 Kafka → OLAP ETL latency 5-15 menit	Injest real-time, query langsung
 Memory explosion on high-cardinality group-by	SIMD dictionary + roaring bitmap
 Cloud bill mahal	Compression ratio 10× vs Parquet, zero-copy mmap
-🏗️ Architecture (pure Go)
+ Architecture (pure Go)
 Table
 Copy
 Layer	Tech
@@ -18,7 +18,7 @@ Query engine	Vectorized execution (AVX2 via golang.org/x/sys/cpu)
 Index	Min-max + zone-map auto-generated
 Compaction	Background merge tree (LSM style)
 API	HTTP + native Go client
-🧪 Portfolio punchline
+ Portfolio punchline
 “I built a single-binary OLAP engine that injests 1 M rows/sec and serves sub-10 ms aggregations on my laptop — no ClickHouse, no Spark, no JVM.”
 
 
@@ -41,10 +41,10 @@ PHASE 1 – Core Data Format (Day 2-4)
 [x] LZ4 & roaring bitmap compression layer
 [x] unit-bench: 1 M rows encode < 250 MB, decode < 80 ms
 PHASE 2 – Storage Engine (Day 5-8)
-[ ] LSM tree (levels 0-6) with level-triggered compaction
-[ ] mmap-backed blocks, zero-copy read path
-[ ] WAL (write-ahead-log) for crash recovery
-[ ] background compaction worker pool (goroutine + errgroup)
+[x] LSM tree (levels 0-6) with level-triggered compaction
+[x] mmap-backed blocks, zero-copy read path
+[x] WAL (write-ahead-log) for crash recovery
+[x] background compaction worker pool (goroutine + errgroup)
 PHASE 3 – Kafka Ingest Pipeline (Day 9-11)
 [ ] sarama consumer-group with auto-commit
 [ ] zero-copy JSON → columnar decode (simdjson fallback)

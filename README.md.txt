@@ -1,5 +1,6 @@
 # RIVER - Petabyte-Grade Streaming OLAP Engine in Pure Go
 
+*Columnar OLAP database yang bisa injest 1 juta baris/detik dari Kafka, lalu query SELECT count() GROUP BY city dalam 5 ms — satu binary, no JVM, no CGO.*
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/0xReLogic/river)](https://goreportcard.com/report/github.com/0xReLogic/river)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -40,17 +41,6 @@ RIVER is currently in active development. The following components have been com
 - [x] Fixed-width & variable-length encoders (i32, i64, f32, f64, string, bool)
 - [x] LZ4 & roaring bitmap compression layer
 - [x] Benchmark: 1M rows encode < 250 MB, decode < 80 ms
-- [x] LSM tree (levels 0-6) with level-triggered compaction
-- [x] mmap-backed blocks with zero-copy read path
-- [x] WAL (write-ahead-log) for crash recovery
-- [x] Background compaction worker pool (goroutine + errgroup)
-- [x] Checkpoint mechanism for fast recovery
-- [x] Manifest file for LSM tree state tracking
-- [x] Optimized compaction with CPU usage metrics
-- [x] HTTP server with REST API for data operations
-- [x] CLI for server management (start, stop, restart)
-- [x] Benchmark suite for throughput and latency measurement
-- [x] Stress testing for crash recovery validation
 
 ## Benchmark Results
 
@@ -67,18 +57,11 @@ BenchmarkFixedDecode_Int64-8        237   4945064 ns/op   16007218 B/op   3 allo
 
 RIVER development is organized into the following phases:
 
-### Phase 2 – Storage Engine ✅
-- ✅ LSM tree (levels 0-6) with level-triggered compaction
-- ✅ mmap-backed blocks, zero-copy read path
-- ✅ WAL (write-ahead-log) for crash recovery
-- ✅ Background compaction worker pool
-- ✅ Checkpoint mechanism for fast recovery (≤ 3s)
-- ✅ Manifest file for LSM tree state tracking
-- ✅ Optimized compaction with CPU usage metrics
-- ✅ HTTP server with REST API for data operations
-- ✅ CLI for server management (start, stop, restart)
-- ✅ Benchmark suite for throughput and latency measurement
-- ✅ Stress testing for crash recovery validation
+### Phase 2 – Storage Engine
+- LSM tree (levels 0-6) with level-triggered compaction
+- mmap-backed blocks, zero-copy read path
+- WAL (write-ahead-log) for crash recovery
+- Background compaction worker pool
 
 ### Phase 3 – Kafka Ingest Pipeline
 - Sarama consumer-group with auto-commit

@@ -7,6 +7,39 @@ import (
 
 const numValues = 1_000_000
 
+func TestFixedEncodeDecodeInt64(t *testing.T) {
+	encoder := NewFixed()
+	values := make([]int64, 100)
+	for i := 0; i < 100; i++ {
+		values[i] = int64(i)
+	}
+
+	// Encode
+	buf := new(bytes.Buffer)
+	err := encoder.Encode(buf, values)
+	if err != nil {
+		t.Fatalf("Failed to encode: %v", err)
+	}
+
+	// Decode
+	decodedValues := make([]int64, 0)
+	reader := bytes.NewReader(buf.Bytes())
+	err = encoder.Decode(reader, &decodedValues, 100)
+	if err != nil {
+		t.Fatalf("Failed to decode: %v", err)
+	}
+
+	// Verify
+	if len(decodedValues) != 100 {
+		t.Errorf("Expected 100 values, got %d", len(decodedValues))
+	}
+	for i := 0; i < 100; i++ {
+		if decodedValues[i] != int64(i) {
+			t.Errorf("Value mismatch at index %d: expected %d, got %d", i, i, decodedValues[i])
+		}
+	}
+}
+
 func BenchmarkFixedEncode_Int64(b *testing.B) {
 	encoder := NewFixed()
 	values := make([]int64, numValues)

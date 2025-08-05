@@ -2,7 +2,6 @@ package bitmap
 
 import (
 	"bytes"
-	"io"
 
 	"github.com/RoaringBitmap/roaring"
 )
